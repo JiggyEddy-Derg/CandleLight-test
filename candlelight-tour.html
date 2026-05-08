@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candlelight Music & Tour — Vander-Ende Onderdonk House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0dc;
+    --dark: #1a1209;
+    --gold: #c9a227;
+    --warm: #e8d5a3;
+    --flicker: #f7c948;
+    --candle-white: #faf6e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--dark);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* === NOISE TEXTURE OVERLAY === */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px 80px;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 60%, #ede8c8 0%, var(--cream) 70%);
+    border-bottom: 2px solid var(--dark);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%231a1209' d='M0,30 Q180,60 360,30 Q540,0 720,30 Q900,60 1080,30 Q1260,0 1440,30 L1440,60 L0,60Z'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  /* Candle flame flicker animation */
+  @keyframes flicker {
+    0%, 100% { opacity: 1; transform: scaleY(1) translateY(0); }
+    25% { opacity: 0.85; transform: scaleY(0.95) translateY(1px); }
+    50% { opacity: 0.9; transform: scaleY(1.05) translateY(-1px); }
+    75% { opacity: 0.8; transform: scaleY(0.97) translateY(0.5px); }
+  }
+
+  @keyframes candleGlow {
+    0%, 100% { box-shadow: 0 0 30px 10px rgba(247,201,72,0.25); }
+    50% { box-shadow: 0 0 50px 20px rgba(247,201,72,0.4); }
+  }
+
+  .flame-icon {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 20px;
+    animation: flicker 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px var(--flicker));
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 9vw, 7rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .hero-title .line2 {
+    font-style: italic;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    display: block;
+    letter-spacing: 4px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.15rem);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #5a4a2a;
+    margin-bottom: 50px;
+  }
+
+  .dates-row {
+    display: flex;
+    gap: 0;
+    margin-bottom: 50px;
+    border: 2.5px solid var(--dark);
+  }
+
+  .date-card {
+    padding: 18px 36px;
+    border-right: 2.5px solid var(--dark);
+    transition: background 0.25s, color 0.25s;
+  }
+  .date-card:last-child { border-right: none; }
+  .date-card:hover { background: var(--dark); color: var(--cream); }
+
+  .date-month {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    display: block;
+  }
+  .date-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1;
+    display: block;
+  }
+
+  .hero-venue {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  /* === NAV === */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--dark);
+    color: var(--cream);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  nav a {
+    color: var(--cream);
+    text-decoration: none;
+    padding: 16px 32px;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  nav a:last-child { border-right: none; }
+  nav a:hover { background: var(--gold); color: var(--dark); }
+
+  /* === SECTIONS === */
+  section {
+    padding: 90px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    height: 1px;
+    width: 40px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 32px;
+  }
+
+  /* === ABOUT === */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1100px;
+    padding: 100px 40px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+
+  .about-text p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    color: #2d2010;
+  }
+
+  .flyer-frame {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .flyer-frame::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border: 2px solid var(--gold);
+    transform: rotate(1.5deg);
+  }
+  .flyer-frame img {
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    position: relative;
+    z-index: 1;
+    border: 2px solid var(--dark);
+    box-shadow: 8px 8px 0 var(--dark);
+  }
+
+  /* === DATES === */
+  #dates-section {
+    background: var(--dark);
+    color: var(--cream);
+    max-width: 100%;
+    padding: 90px 40px;
+    border-top: 4px solid var(--gold);
+    border-bottom: 4px solid var(--gold);
+  }
+
+  #dates-section .inner { max-width: 1000px; margin: 0 auto; }
+
+  .dates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+    border: 2px solid rgba(201,162,39,0.4);
+  }
+
+  .big-date-card {
+    padding: 48px 32px;
+    text-align: center;
+    border-right: 2px solid rgba(201,162,39,0.3);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.3s;
+  }
+  .big-date-card:last-child { border-right: none; }
+  .big-date-card:hover { background: rgba(201,162,39,0.1); }
+  .big-date-card::before {
+    content: '🕯️';
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 16px;
+    animation: flicker 2.5s ease-in-out infinite;
+  }
+  .big-date-card:nth-child(2)::before { animation-delay: 0.8s; }
+  .big-date-card:nth-child(3)::before { animation-delay: 1.6s; }
+
+  .big-month {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .big-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    display: block;
+  }
+  .big-weekday {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* === LOCATION === */
+  #location {
+    max-width: 100%;
+    padding: 90px 40px;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+  #location .inner { max-width: 1000px; margin: 0 auto; }
+
+  .location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 60px;
+    margin-top: 48px;
+    align-items: start;
+  }
+
+  .location-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .location-info address {
+    font-style: normal;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #3a2f1a;
+    margin-bottom: 24px;
+  }
+  .map-btn {
+    display: inline-block;
+    background: var(--dark);
+    color: var(--cream);
+    text-decoration: none;
+    padding: 14px 28px;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+    border: 2px solid var(--dark);
+  }
+  .map-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+
+  .map-embed {
+    border: 2.5px solid var(--dark);
+    box-shadow: 6px 6px 0 var(--dark);
+    overflow: hidden;
+  }
+  .map-embed iframe {
+    display: block;
+    width: 100%;
+    height: 380px;
+    border: none;
+  }
+
+  /* === FOOTER === */
+  footer {
+    background: var(--dark);
+    color: rgba(245,240,220,0.6);
+    text-align: center;
+    padding: 48px 20px;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+  }
+  footer .flame { font-size: 1.5rem; display: block; margin-bottom: 12px; }
+
+  /* === FADE IN ANIMATION === */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * {
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero .flame-icon { animation-delay: 0s, 0s; }
+  .hero-title { animation-delay: 0.2s; }
+  .hero-subtitle { animation-delay: 0.4s; }
+  .dates-row { animation-delay: 0.55s; }
+  .hero-venue { animation-delay: 0.7s; }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 700px) {
+    #about { grid-template-columns: 1fr; gap: 40px; }
+    .flyer-frame { order: -1; }
+    .dates-grid { grid-template-columns: 1fr; }
+    .big-date-card { border-right: none; border-bottom: 2px solid rgba(201,162,39,0.3); }
+    .big-date-card:last-child { border-bottom: none; }
+    .location-grid { grid-template-columns: 1fr; }
+    .dates-row { flex-direction: column; }
+    .date-card { border-right: none; border-bottom: 2.5px solid var(--dark); }
+    .date-card:last-child { border-bottom: none; }
+    nav { flex-wrap: wrap; }
+    nav a { padding: 12px 16px; font-size: 0.65rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="flame-icon">🕯️</span>
+  <h1 class="hero-title">
+    Candlelight
+    <span class="line2">Music &amp; Tour</span>
+  </h1>
+  <p class="hero-subtitle">An Evening of History, Music &amp; Warm Light</p>
+  <div class="dates-row">
+    <div class="date-card">
+      <span class="date-month">January</span>
+      <span class="date-day">10</span>
+    </div>
+    <div class="date-card">
+      <span class="date-month">February</span>
+      <span class="date-day">7</span>
+    </div>
+    <div class="date-card">
+      <span class="date-month">March</span>
+      <span class="date-day">7</span>
+    </div>
+  </div>
+  <p class="hero-venue">@ The Vander-Ende Onderdonk House · Queens, NY</p>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#about">About</a>
+  <a href="#dates-section">Dates</a>
+  <a href="#location">Location</a>
+</nav>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text">
+    <p class="section-label">About the Event</p>
+    <h2 class="section-title">Step Into the Past by Candlelight</h2>
+    <p>Join us for an intimate evening series at one of Queens' most treasured historic landmarks — the <strong>Vander-Ende Onderdonk House</strong>, the oldest surviving Dutch Colonial farmhouse in New York City.</p>
+    <p>Each gathering blends a guided tour of the historic home with live music, all illuminated by the warm, dancing glow of candlelight. Walk through centuries of history, hear stories of the families who called this place home, and let the music carry you back in time.</p>
+    <p>This is an experience designed for those who appreciate history, community, and the quiet magic of a flame-lit room. Whether you're a history enthusiast, music lover, or simply looking for something truly special — you are welcome here.</p>
+  </div>
+  <div class="flyer-frame">
+    <img src="2CANDLELIGHTTOUR_FINAL-01.png" alt="Candlelight Music & Tour Flyer" id="flyerImg">
+  </div>
+</section>
+
+<!-- DATES -->
+<div id="dates-section">
+  <div class="inner">
+    <p class="section-label" style="color:var(--gold)">Upcoming Evenings</p>
+    <h2 class="section-title" style="color:var(--cream)">Save the Dates</h2>
+    <div class="dates-grid">
+      <div class="big-date-card">
+        <span class="big-month">January</span>
+        <span class="big-day">10</span>
+        <span class="big-weekday">Friday Evening</span>
+      </div>
+      <div class="big-date-card">
+        <span class="big-month">February</span>
+        <span class="big-day">7</span>
+        <span class="big-weekday">Friday Evening</span>
+      </div>
+      <div class="big-date-card">
+        <span class="big-month">March</span>
+        <span class="big-day">7</span>
+        <span class="big-weekday">Friday Evening</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOCATION -->
+<div id="location" style="background: var(--candle-white);">
+  <div class="inner">
+    <p class="section-label">Find Us</p>
+    <h2 class="section-title">Location</h2>
+    <div class="location-grid">
+      <div class="location-info">
+        <h3>The Vander-Ende Onderdonk House</h3>
+        <address>
+          1820 Flushing Avenue<br>
+          Ridgewood, Queens<br>
+          New York, NY 11385
+        </address>
+        <p style="font-size:0.95rem; line-height:1.7; color:#3a2f1a; margin-bottom: 24px;">
+          Built circa 1709, the Vander-Ende Onderdonk House is the oldest Dutch stone house still standing in New York City. Listed on the National Register of Historic Places, it sits at the border of Ridgewood and Bushwick and is managed by the Greater Ridgewood Historical Society.
+        </p>
+        <a class="map-btn" href="https://maps.google.com/?q=1820+Flushing+Ave+Queens+NY+11385" target="_blank" rel="noopener">
+          Open in Google Maps →
+        </a>
+      </div>
+      <div class="map-embed">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.8!2d-73.9121!3d40.7032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25e4b4c5b5b5b%3A0x0!2s1820+Flushing+Ave%2C+Queens%2C+NY+11385!5e0!3m2!1sen!2sus!4v1"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Map to Vander-Ende Onderdonk House">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="flame">🕯️</span>
+  Candlelight Music &amp; Tour · Vander-Ende Onderdonk House · Queens, NY<br>
+  Jan 10 &nbsp;·&nbsp; Feb 7 &nbsp;·&nbsp; Mar 7
+</footer>
+
+<script>
+  // Embed the flyer as base64
+  // Load flyer from file path for local use
+  const img = document.getElementById('flyerImg');
+  img.src = '2CANDLELIGHTTOUR_FINAL-01.png';
+  img.onerror = function() {
+    // Fallback: show a styled placeholder
+    this.style.display = 'none';
+    this.parentElement.innerHTML = '<div style="width:320px;height:420px;background:var(--cream);border:2px solid var(--dark);display:flex;align-items:center;justify-content:center;font-family:Playfair Display,serif;font-size:1.1rem;text-align:center;padding:20px;position:relative;z-index:1;">🕯️<br><br>Candlelight<br>Music & Tour<br><br>Flyer</div>';
+  };
+
+  // Smooth reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animation = 'fadeUp 0.7s ease both';
+        e.target.style.opacity = '1';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.big-date-card, .about-text, .flyer-frame, .location-info, .map-embed').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
